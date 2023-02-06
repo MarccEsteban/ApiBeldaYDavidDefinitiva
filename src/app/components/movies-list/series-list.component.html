@@ -1,0 +1,176 @@
+<div class="container-fluid">
+
+  <div class="w-100 d-flex">
+    <h3 class="mt-2 d-inline-block me-auto">{{series.length}}
+      series</h3>
+    <h3 class="d-inline-block ms-auto pointer"
+        (click)="newSerie()"
+        data-bs-toggle="modal"
+        data-bs-target="#miModal"> Add serie
+      <i class="fas fa-plus-circle pointer"></i></h3>
+  </div>
+
+  <div class="container"
+       *ngFor="let serie of series">
+    <div class="row border rounded">
+      <div class="col-md-11">
+        <div (click)="loadSerie(serie)" data-bs-toggle="modal"
+
+             data-bs-target="#miModal" class="row mt-3 pt-2">
+          <div class="col-md-2">
+            <img src="{{serie.imagenes[0] ||
+'assets/images/no-image-icon.jpg'}}" alt="{{serie.titulo}}">
+          </div>
+          <div class="col-md-9">
+            <h5>{{serie.titulo}}</h5>
+            <small class="text-danger">{{serie.categorias}}</small>
+            <p><b>Sinopsis</b>: {{serie.sinopsis}} - <b>Año emision</b>:
+              {{serie.anyo_emision}}</p>
+            <!-- <small>{{serie.plot}}</small> -->
+          </div>
+          <div class="col-md-1 align-self-center align-middle">
+            <small class="badge bg-success p-3">{{serie.puntuacion_personal}}</small>
+          </div>
+          <div class="pb-2"></div>
+        </div>
+      </div>
+
+      <div class="col-md-1 remove d-flex">
+        <h3 class="ms-auto align-self-center">
+          <i (click)="removeSerie(serie)"
+             class="fas fa-times"></i></h3>
+      </div>
+    </div>
+
+    <div class="mb-2"></div>
+  </div>
+  <!-- Fin del NgFor →
+
+  <-- Modal -->
+  <div class="modal fade" id="miModal"
+       tabindex="-1" aria-labelledby="miModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+
+          <h5 class="modal-title" id="miModalLabel">
+            {{editar?formSerie.getRawValue().title:'New Serie'}}</h5>
+          <button type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+
+        </div>
+        <form [formGroup]="formSerie" (ngSubmit)="onSubmit()">
+          <div class="modal-body">
+            <div class="form-floating mb-3">
+              <input formControlName="titulo"
+                     type="text" class="form-control"
+                     id="title" value="{{formSerie.getRawValue().title}}"
+                     placeholder="Title">
+              <label for="title">
+                Title</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input formControlName="anyo_emision"type="number" class="form-control"
+                     id="year" value="{{formSerie.getRawValue().year}}"
+                     placeholder="Year">
+              <label for="year">
+                Year</label>
+            </div>
+
+            <div class="row">
+              <div class="col-8">
+                <div class="form-floating mb-3">
+                  <input formControlName="poster"
+                         type="text" class="form-control"
+
+                         id="poster"
+
+                         value="{{formSerie.getRawValue().poster}}"
+                         placeholder="Poster">
+                  <label for="poster">
+                    Poster</label>
+                </div>
+
+              </div>
+              <div class="col-4">
+
+                <img src="{{formSerie.getRawValue().poster ||
+
+'assets/images/no-image-icon.jpg'}}" alt="...">
+              </div>
+            </div>
+
+            <div *ngIf="!editar">
+              <label for="newSelect">Categorias</label>
+              <select class="form-select" id="newSelect"
+                      aria-label="Categorias" multiple
+                      formControlName="Categorias">
+                <option *ngFor="let cat of categorias"
+
+                        [value]="cat">
+                  {{cat}}</option>
+              </select>
+            </div>
+
+            <!-- Add New Categoria -->
+            <div class="row mt-3">
+              <div class="col-md-8">
+                <div [formGroup]="mynewCategoria" class="form-floating mb-3">
+                  <input
+                    type="text" class="form-control"
+                    id="newCategoria"
+                    formControlName="newCategoria"
+                    value=""placeholder="New Categoria">
+                  <label for="newCategoria">
+                    New Categoria</label>
+                </div>
+
+              </div>
+              <div class="col-md-4 mt-2">
+                <h3><i class="fas fa-plus-circle pointer"
+                       (click)="addNewCategoria(mynewCategoria.getRawValue().newCategoria)"></i></h3>
+              </div>
+            </div>
+
+            <!--<fieldset formGroupName="imdb">
+              <legend>IMDB</legend>
+              <div class="form-floating mb-3">
+                <input formControlName="rating"
+                       type="number" class="form-control"
+
+                       id="rating"
+
+                       value="{{formSerie.getRawValue().imdb.rating}}"
+
+                       placeholder="Rating">
+                <label for="rating">
+                  Rating</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input formControlName="votes"
+                       type="number" class="form-control"
+
+                       id="votes"
+
+                       value="{{formSerie.getRawValue().imdb.votes}}"
+
+                       placeholder="Votes">
+                <label for="votes">
+                  Votes</label>
+              </div>
+            </fieldset>-->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary"
+                    data-bs-dismiss="modal">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
